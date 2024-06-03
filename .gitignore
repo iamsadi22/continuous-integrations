@@ -25,7 +25,6 @@ assets/*
 !src/assets
 !includes/Assets
 !assets/index.php
-package-lock.json
 composer.lock
 app/Views/public/Js/*
 vendor
