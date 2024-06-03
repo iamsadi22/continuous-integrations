@@ -1,6 +1,6 @@
 <?php
 
-namespace RexTheme\ContinuousIntegrations\REST;
+namespace RexTheme\ContinuousIntegrations\Rest;
 
 /**
  * API Manager class.

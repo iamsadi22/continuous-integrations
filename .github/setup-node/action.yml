@@ -35,6 +35,7 @@ runs:
       run: |
         npm ci
       shell: bash
+
     - name: Upload npm logs as an artifact on failure
       uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
       if: failure()
