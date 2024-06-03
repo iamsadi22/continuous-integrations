@@ -14,11 +14,9 @@ concurrency:
 
 jobs:
   e2e-playwright:
-    name: Playwright - ${{ matrix.part }}
+    name: Playwright e2e tests
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}
-    strategy:
-      fail-fast: false
 
     steps:
       - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
