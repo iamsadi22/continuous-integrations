@@ -17,6 +17,7 @@
 defined( 'ABSPATH' ) || exit;
 
 
+
 final class ContinuousIntegrations {
     /**
      * Plugin version.
