@@ -28,6 +28,9 @@ jobs:
       - name: Npm build
         run: npm run build
 
+      - name: Install PHP dependencies
+        run: composer install --no-dev
+
       - name: Install Playwright dependencies
         run: |
           npx playwright install chromium firefox webkit --with-deps
