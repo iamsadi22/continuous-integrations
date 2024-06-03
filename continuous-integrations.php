@@ -210,7 +210,7 @@ final class ContinuousIntegrations {
             $this->container['admin_menu'] = new RexTheme\ContinuousIntegrations\Admin\Menu();
         }
 		$this->container['assets']   = new RexTheme\ContinuousIntegrations\Assets\LoadAssets();
-        $this->container['rest_api'] = new RexTheme\ContinuousIntegrations\REST\Api();
+        $this->container['rest_api'] = new RexTheme\ContinuousIntegrations\Rest\Api();
     }
 
     /**
