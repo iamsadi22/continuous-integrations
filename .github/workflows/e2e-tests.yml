@@ -19,9 +19,7 @@ jobs:
     if: ${{ github.event_name == 'pull_request' }}
     strategy:
       fail-fast: false
-      matrix:
-        part: [ 1, 2, 3, 4 ]
-        totalParts: [ 4 ]
+
     steps:
       - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
         with:
