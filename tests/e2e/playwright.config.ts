@@ -49,12 +49,6 @@ const config = defineConfig( {
 			grepInvert: /-firefox/,
 		},
 	],
-	/* Run your local dev server before starting the tests */
-	webServer: {
-		command: 'npm run env:start',
-		url: 'http://localhost:8889',
-		reuseExistingServer: !process.env.CI,
-	},
 } );
 
 export default config;
