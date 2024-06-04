@@ -51,7 +51,7 @@ jobs:
           done
           cat changelog.md
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }} # Set the GH_TOKEN environment variable
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Create GitHub Release
         id: create_release
@@ -63,7 +63,6 @@ jobs:
           release_name: "Weekly Release $(date +'%Y-%m-%d')"
           body_path: changelog.md
           prerelease: true
-
 
       - name: Upload plugin zip to release
         uses: actions/upload-release-asset@v1
