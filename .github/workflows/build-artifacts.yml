@@ -44,7 +44,7 @@ jobs:
       - name: Create changelog
         run: |
           echo "## Changelog" > changelog.md
-          for pr in $(echo "${{ steps.changelog.outputs.prs }}"))
+          for pr in $(echo "${{ steps.changelog.outputs.prs }}")
           do
             pr_details=$(gh pr view $pr --json title,url,body --jq '. | "* [" + .title + "](" + .url + ") - " + .body')
             echo "$pr_details" >> changelog.md
