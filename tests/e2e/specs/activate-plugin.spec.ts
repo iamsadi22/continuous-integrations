@@ -13,4 +13,14 @@ test.describe( 'Plugin Activation', () => {
 			throw error; // Re-throw the error to fail the test
 		}
 	} );
+
+	test( 'Failed test', async ( { admin, page } ) => {
+		try {
+			await admin.visitAdminPage( 'admin.php?page=continuous-integrations#/' );
+			await expect(page.getByText('Welcome to Vue')).toBeVisible();
+		} catch (error) {
+			console.error('Error during test execution:', error);
+			throw error; // Re-throw the error to fail the test
+		}
+	} );
 } );
