@@ -1,0 +1,87 @@
+name: Weekly Release
+
+on:
+  schedule:
+    - cron: '0 17 * * 5'
+
+jobs:
+  release:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Ensure full history is fetched
+
+      - name: Use desired version of NodeJS
+        uses: actions/setup-node@5b52f097d36d4b0b2f94ed6de710023fbb8b2236 # v3.1.0
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+
+      - name: Npm install and build
+        run: |
+          npm ci
+          npm run build
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+
+      # Since Composer dependencies are installed using `composer update` and no lock file is in version control,
+      # passing a custom cache suffix ensures that the cache is flushed at least once per week.
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@57532f8be5bda426838819c5ee9afb8af389d51a # v3.0.0
+        with:
+          custom-cache-suffix: $(/bin/date -u --date='last Mon' "+%F")
+          composer-options: '--no-dev'
+
+      - name: Set up Git
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+
+      - name: Generate plugin zip file
+        run: ./bin/build-plugin-zip.sh -b
+
+      - name: Get merged PRs
+        id: changelog
+        run: |
+          echo "Fetching PRs merged into release branch..."
+          PRS=$(git log --merges --pretty=format:"%h %s" | grep -Eo '#[0-9]+' | sort | uniq)
+          echo "Found PRs: $PRS"
+          echo "::set-output name=prs::$PRS"
+
+      - name: Create changelog
+        run: |
+          echo "## Changelog" > changelog.md
+          for pr in $(echo "${{ steps.changelog.outputs.prs }}")
+          do
+            pr_details=$(gh pr view $pr --json title,url,body --jq '. | "* [" + .title + "](" + .url + ") - " + .body')
+            echo "$pr_details" >> changelog.md
+          done
+          cat changelog.md
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: "v$(date +'%Y%m%d%H%M%S')"
+          release_name: "Weekly Release $(date +'%Y-%m-%d')"
+          body_path: changelog.md
+          prerelease: true
+
+      - name: Upload plugin zip to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./build/continuous-integrations.zip
+          asset_name: continuous-integrations.zip
+          asset_content_type: application/zip
