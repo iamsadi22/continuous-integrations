@@ -17,13 +17,14 @@
 defined( 'ABSPATH' ) || exit;
 
 
+
 final class ContinuousIntegrations {
     /**
      * Plugin version.
      *
      * @var string
      */
-    const VERSION = '1.0.0';
+    const VERSION = '3.0.0';
 
     /**
      * Plugin slug.
