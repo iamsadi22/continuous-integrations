@@ -23,23 +23,10 @@ jobs:
           node-version-file: '.nvmrc'
           cache: npm
 
-      - name: Npm install and build
-        run: |
-          npm ci
-          npm run build
-
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.0'
-
-      # Since Composer dependencies are installed using `composer update` and no lock file is in version control,
-      # passing a custom cache suffix ensures that the cache is flushed at least once per week.
-      - name: Install Composer dependencies
-        uses: ramsey/composer-install@57532f8be5bda426838819c5ee9afb8af389d51a # v3.0.0
-        with:
-          custom-cache-suffix: $(/bin/date -u --date='last Mon' "+%F")
-          composer-options: '--no-dev'
 
       - name: Set up Git
         run: |
@@ -69,6 +56,19 @@ jobs:
             echo "$pr_details" >> changelog.md
           done
           cat changelog.md
+
+      - name: Set up GitHub CLI
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install GitHub CLI
+        run: |
+          pip install --upgrade pip
+          pip install github-cli
+
+      - name: Authenticate GitHub CLI
+        run: gh auth login --with-token <<< $GH_TOKEN
 
       - name: Create GitHub Release
         id: create_release
