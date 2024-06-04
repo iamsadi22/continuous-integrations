@@ -33,6 +33,12 @@ jobs:
       - name: Generate plugin zip file
         run: ./bin/build-plugin-zip.sh -b
 
+      - name: Extract version from PHP file
+        id: get_version
+        run: |
+          VERSION=$(grep -oP 'Version:\s*\K[^\s]+' continuous-integrations.php)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
       - name: Get merged PRs
         id: changelog
         run: |
@@ -59,8 +65,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: "v$(date +'%Y%m%d%H%M%S')"
-          release_name: "Weekly Release $(date +'%Y-%m-%d')"
+          tag_name: "rc-${{ env.VERSION }}"
+          release_name: "${{ env.VERSION }}"
           body_path: changelog.md
           prerelease: true
 
