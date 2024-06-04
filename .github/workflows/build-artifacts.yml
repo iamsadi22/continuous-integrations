@@ -12,7 +12,7 @@ jobs:
   release:
     name: Create Weekly Release
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/release'
 
     steps:
       - name: Checkout repository
@@ -31,6 +31,12 @@ jobs:
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
 
+      - name: Extract version from PHP file
+        id: get_version
+        run: |
+          VERSION=$(grep -oP 'Version:\s*\K[^\s]+' continuous-integrations.php)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
       - name: Grant execute permissions for build script
         run: chmod +x ./bin/build-plugin-zip.sh
 
@@ -40,5 +46,5 @@ jobs:
       - name: Upload build file as artifact
         uses: actions/upload-artifact@v2
         with:
-          name: continuous-integrations
+          name: continuous-integrations-${{ env.VERSION }}
           path: ./continuous-integrations.zip
