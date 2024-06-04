@@ -4,12 +4,15 @@ on:
   schedule:
     - cron: '0 17 * * 5'
   workflow_dispatch:
+  push:
+    branches:
+      - release
 
 jobs:
   release:
     name: Create Weekly Release
-    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
 
     steps:
       - name: Checkout repository
@@ -33,49 +36,8 @@ jobs:
       - name: Generate plugin zip file
         run: ./bin/build-plugin-zip.sh -b
 
-      - name: Extract version from PHP file
-        id: get_version
-        run: |
-          VERSION=$(grep -oP 'Version:\s*\K[^\s]+' continuous-integrations.php)
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-
-      - name: Get merged PRs
-        id: changelog
-        run: |
-          echo "Fetching PRs merged into release branch..."
-          PRS=$(git log origin/master --merges --pretty=format:"%h %s" | grep -Eo '#[0-9]+' | sort | uniq)
-          echo "Found PRs: $PRS"
-          echo "::set-output name=prs::$PRS"
-
-      - name: Create changelog
-        run: |
-          echo "## Changelog" > changelog.md
-          for pr in $(echo "${{ steps.changelog.outputs.prs }}")
-          do
-            pr_details=$(gh pr view $pr --json title,url,body --jq '. | "* [" + .title + "](" + .url + ") - " + .body')
-            echo "$pr_details" >> changelog.md
-          done
-          cat changelog.md
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-
-      - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload build file as artifact
+        uses: actions/upload-artifact@v2
         with:
-          tag_name: "rc-${{ env.VERSION }}"
-          release_name: "${{ env.VERSION }}"
-          body_path: changelog.md
-          prerelease: true
-
-      - name: Upload plugin zip to release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./continuous-integrations.zip
-          asset_name: continuous-integrations.zip
-          asset_content_type: application/zip
+          name: plugin-zip
+          path: ./continuous-integrations.zip
