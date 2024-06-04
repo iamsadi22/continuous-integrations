@@ -20,10 +20,11 @@ jobs:
         with:
           fetch-depth: 0 # Ensure full history is fetched
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - name: Use desired version of NodeJS
+        uses: actions/setup-node@5b52f097d36d4b0b2f94ed6de710023fbb8b2236 # v3.1.0
         with:
-          node-version: '14'
+          node-version-file: '.nvmrc'
+          cache: npm
 
       - name: Set up Git
         run: |
@@ -39,5 +40,5 @@ jobs:
       - name: Upload build file as artifact
         uses: actions/upload-artifact@v2
         with:
-          name: plugin-zip
+          name: continuous-integrations
           path: ./continuous-integrations.zip
