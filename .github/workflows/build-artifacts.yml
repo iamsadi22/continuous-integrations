@@ -57,7 +57,7 @@ jobs:
           done
           cat changelog.md
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }} # Set the GH_TOKEN environment variable
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
 
       - name: Create GitHub Release
