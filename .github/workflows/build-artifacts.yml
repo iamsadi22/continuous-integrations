@@ -47,17 +47,6 @@ jobs:
           echo "Found PRs: $PRS"
           echo "::set-output name=prs::$PRS"
 
-#      - name: Create changelog
-#        run: |
-#          echo "## Changelog" > changelog.md
-#          for pr in $(echo "${{ steps.changelog.outputs.prs }}")
-#          do
-#            pr_details=$(gh pr view $pr --json title,url,body --jq '. | "* [" + .title + "](" + .url + ") - " + .body')
-#            echo "$pr_details" >> changelog.md
-#          done
-#          cat changelog.md
-#        env:
-#          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Create GitHub Release
         id: create_releaseactions/checkout
