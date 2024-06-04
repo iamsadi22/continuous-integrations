@@ -53,7 +53,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: "v$(date +'%Y%m%d%H%M%S')"
+          tag_name: "v1.0.1"
           release_name: "Weekly Release $(date +'%Y-%m-%d')"
           body: |
             Changes in this Release
