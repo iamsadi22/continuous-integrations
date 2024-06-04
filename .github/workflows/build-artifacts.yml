@@ -56,7 +56,6 @@ jobs:
         with:
           tag_name: "v$(date +'%Y%m%d%H%M%S')"
           release_name: "Weekly Release $(date +'%Y-%m-%d')"
-          body_path: changelog.md
           prerelease: true
 
       - name: Upload plugin zip to release
