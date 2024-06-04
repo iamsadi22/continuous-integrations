@@ -3,6 +3,7 @@ name: Weekly Release
 on:
   schedule:
     - cron: '0 17 * * 5'
+  workflow_dispatch:
 
 jobs:
   release:
