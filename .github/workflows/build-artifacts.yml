@@ -47,29 +47,21 @@ jobs:
           echo "Found PRs: $PRS"
           echo "::set-output name=prs::$PRS"
 
-      - name: Create changelog
-        run: |
-          echo "## Changelog" > changelog.md
-          for pr in $(echo "${{ steps.changelog.outputs.prs }}"))
-          do
-            pr_details=$(gh pr view $pr --json title,url,body --jq '. | "* [" + .title + "](" + .url + ") - " + .body')
-            echo "$pr_details" >> changelog.md
-          done
-          cat changelog.md
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-
-
-      - name: Create GitHub Release
+      - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: "v$(date +'%Y%m%d%H%M%S')"
-          release_name: "Weekly Release $(date +'%Y-%m-%d')"
-          body_path: changelog.md
-          prerelease: true
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+          draft: false
+          prerelease: false
+
 
       - name: Upload plugin zip to release
         uses: actions/upload-release-asset@v1
