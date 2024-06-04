@@ -13,6 +13,7 @@
 		"env:stop": "wp-env stop",
 		"build": "wp-scripts build",
 		"start": "wp-scripts start",
+	  	"build:plugin-zip": "bash ./bin/build-plugin-zip.sh",
 		"test:php": "wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/continuous-integrations/phpunit.xml.dist --verbose'",
 		"test:watch": "npm run composer test:watch",
 		"composer": "wp-env run cli --env-cwd=wp-content/plugins/continuous-integrations composer",
