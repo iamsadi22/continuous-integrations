@@ -22,8 +22,10 @@
 		"test:e2e:watch": "npm run test:e2e -- --watch"
 	},
 	"devDependencies": {
+		"@playwright/test": "^1.44.1",
 		"@wordpress/api-fetch": "^6.44.0",
 		"@wordpress/e2e-test-utils": "^11.0.0",
+		"@wordpress/e2e-test-utils-playwright": "^1.0.0",
 		"@wordpress/env": "^10.0.0",
 		"@wordpress/i18n": "^4.47.0",
 		"@wordpress/scripts": "^26.18.0",
