@@ -17,16 +17,10 @@ jobs:
         with:
           fetch-depth: 0 # Ensure full history is fetched
 
-      - name: Use desired version of NodeJS
-        uses: actions/setup-node@5b52f097d36d4b0b2f94ed6de710023fbb8b2236 # v3.1.0
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version-file: '.nvmrc'
-          cache: npm
-
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.0'
+          node-version: '14'
 
       - name: Set up Git
         run: |
@@ -43,23 +37,31 @@ jobs:
         id: changelog
         run: |
           echo "Fetching PRs merged into release branch..."
-          PRS=$(git log --merges --pretty=format:"%h %s" | grep -Eo '#[0-9]+' | sort | uniq)
+          PRS=$(git log origin/release --merges --pretty=format:"%h %s" | grep -Eo '#[0-9]+' | sort | uniq)
           echo "Found PRs: $PRS"
           echo "::set-output name=prs::$PRS"
 
-      - name: Create Release
+      - name: Create changelog
+        run: |
+          echo "## Changelog" > changelog.md
+          for pr in $(echo "${{ steps.changelog.outputs.prs }}"))
+          do
+            pr_details=$(gh pr view $pr --json title,url,body --jq '. | "* [" + .title + "](" + .url + ") - " + .body')
+            echo "$pr_details" >> changelog.md
+          done
+          cat changelog.md
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }} # Set the GH_TOKEN environment variable
+
+      - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: "v1.0.1"
+          tag_name: "v$(date +'%Y%m%d%H%M%S')"
           release_name: "Weekly Release $(date +'%Y-%m-%d')"
-          body: |
-            Changes in this Release
-            - First Change
-            - Second Change
-          draft: false
+          body_path: changelog.md
           prerelease: true
 
 
