@@ -7,6 +7,7 @@ on:
 
 jobs:
   release:
+    name: Create Weekly Release
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
 
@@ -44,6 +45,9 @@ jobs:
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
+
+      - name: Grant execute permissions for build script
+        run: chmod +x ./bin/build-plugin-zip.sh
 
       - name: Generate plugin zip file
         run: ./bin/build-plugin-zip.sh -b
