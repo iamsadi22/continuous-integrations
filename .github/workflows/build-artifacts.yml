@@ -56,19 +56,8 @@ jobs:
             echo "$pr_details" >> changelog.md
           done
           cat changelog.md
-
-      - name: Set up GitHub CLI
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-
-      - name: Install GitHub CLI
-        run: |
-          pip install --upgrade pip
-          pip install github-cli
-
-      - name: Authenticate GitHub CLI
-        run: gh auth login --with-token <<< $GH_TOKEN
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Create GitHub Release
         id: create_release
