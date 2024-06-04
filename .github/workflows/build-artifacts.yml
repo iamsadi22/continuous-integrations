@@ -37,7 +37,7 @@ jobs:
         id: changelog
         run: |
           echo "Fetching PRs merged into release branch..."
-          PRS=$(git log origin/release --merges --pretty=format:"%h %s" | grep -Eo '#[0-9]+' | sort | uniq)
+          PRS=$(git log origin/master --merges --pretty=format:"%h %s" | grep -Eo '#[0-9]+' | sort | uniq)
           echo "Found PRs: $PRS"
           echo "::set-output name=prs::$PRS"
 
