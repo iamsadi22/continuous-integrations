@@ -16,17 +16,4 @@
 			<exclude>./tests/phpunit/wp-config.php</exclude>
 		</testsuite>
 	</testsuites>
-
-	<coverage cacheDirectory="./coverage"
-			  includeUncoveredFiles="true"
-			  processUncoveredFiles="true"
-			  pathCoverage="false"
-			  ignoreDeprecatedCodeUnits="true"
-			  disableCodeCoverageIgnore="true">
-		<include>
-			<directory suffix=".php">inc</directory>
-		</include>
-	</coverage>
-
-
 </phpunit>

@@ -14,13 +14,13 @@
 		"build": "wp-scripts build",
 		"start": "wp-scripts start",
 	  	"build:plugin-zip": "bash ./bin/build-plugin-zip.sh",
-		"test:php": "wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/continuous-integrations/phpunit.xml.dist --verbose'",
-		"test:watch": "npm run composer test:watch",
+	  	"test:unit:php": "wp-env run tests-cli --env-cwd=wp-content/plugins/continuous-integrations ./vendor/bin/phpunit",
 		"composer": "wp-env run cli --env-cwd=wp-content/plugins/continuous-integrations composer",
 		"test:e2e": "wp-scripts test-playwright --config tests/e2e/playwright.config.ts",
 		"test:e2e:playwright": "npm run test:e2e",
 		"test:e2e:playwright:ui": "wp-scripts test-playwright --ui --config tests/e2e/playwright.config.ts",
-		"test:e2e:watch": "npm run test:e2e -- --watch"
+		"test:e2e:watch": "npm run test:e2e -- --watch",
+	  	"wp-env": "wp-env"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.44.1",
