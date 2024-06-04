@@ -51,14 +51,17 @@ jobs:
       - name: Install Playwright dependencies
         run: |
           npx playwright install chromium firefox webkit --with-deps
+
       - name: Install WordPress and start the server
         run: |
           npm run env:start
+
       - name: Run the tests
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
         run: |
-          xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- npm run test:e2e -- --shard=${{ matrix.part }}/${{ matrix.totalParts }}
+          xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- npm run test:e2e
+
       - name: Archive debug artifacts (screenshots, traces)
         uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # v4.3.3
         if: ${{ !cancelled() }}
