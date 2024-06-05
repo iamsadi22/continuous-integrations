@@ -1,4 +1,4 @@
-name: PHPCS on PR
+name: Coding Standard
 
 on:
   pull_request:
