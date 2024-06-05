@@ -32,6 +32,7 @@ jobs:
         id: filter
         uses: dorny/paths-filter@v2
         with:
+          list-files: shell
           filters: |
             php:
               - 'includes/**/*.php'
@@ -42,6 +43,7 @@ jobs:
           echo "Filter php = ${{ steps.filter.outputs.php }}"
           echo "Matching files: ${{ steps.filter.outputs.files }}"
           echo "Filter Outputs: ${{ toJson(steps.filter.outputs) }}"
+          echo "File Outputs: ${{ toJson(steps.filter.outputs.php_files) }}"
           echo "Filter Outputs: ${{ toJson(steps.filter) }}"
           echo "Filter Outputs: ${{ toJson(steps) }}"
 
