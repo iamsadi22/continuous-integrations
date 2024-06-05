@@ -54,4 +54,4 @@ jobs:
       - name: Run PHPCS
         if: steps.filter.outputs.php == 'true'
         run: |
-          ./vendor/bin/phpcs --standard=phpcs.xml ${GITHUB_WORKSPACE}/${{ steps.filter.outputs.files }}
+          ./vendor/bin/phpcs --standard=phpcs.xml ${GITHUB_WORKSPACE}/${{ steps.filter.outputs.php_files }}

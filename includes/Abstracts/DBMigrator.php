@@ -17,4 +17,5 @@ abstract class DBMigrator {
 	 * @return void
 	 * */
 	abstract public static function migrate();
+
 }
