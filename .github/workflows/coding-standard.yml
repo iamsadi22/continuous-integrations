@@ -1,0 +1,47 @@
+name: PHPCS on PR
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+
+jobs:
+  phpcs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'  # or any version you are using
+          tools: composer
+
+      - name: Install dependencies
+        run: |
+          composer install
+
+      - name: Determine changed files
+        id: filter
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            php:
+              - '*.php'
+
+      - name: Run PHPCS on changed files
+        if: steps.filter.outputs.php == 'true'
+        run: |
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep '\.php$')
+          if [ -n "$CHANGED_FILES" ]; then
+            phpcs --standard=phpcs.xml $CHANGED_FILES
+          else
+            echo "No PHP files changed."
+          fi

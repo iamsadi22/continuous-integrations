@@ -13,6 +13,7 @@
 		"env:stop": "wp-env stop",
 		"build": "wp-scripts build",
 		"start": "wp-scripts start",
+		"lint:php": "wp-env run --env-cwd='wp-content/plugins/continuous-integrations' cli composer run-script lint",
 	  	"build:plugin-zip": "bash ./bin/build-plugin-zip.sh",
 	  	"test:unit:php": "wp-env run tests-cli --env-cwd=wp-content/plugins/continuous-integrations ./vendor/bin/phpunit",
 		"composer": "wp-env run cli --env-cwd=wp-content/plugins/continuous-integrations composer",
