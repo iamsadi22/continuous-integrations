@@ -35,12 +35,13 @@ jobs:
           filters: |
             php:
               - 'includes/**/*.php'
+              - 'includes/**'
 
       - name: Debug Filter Output
         run: |
           echo "Filter php = ${{ steps.filter.outputs.php }}"
           echo "Matching files: ${{ steps.filter.outputs.files }}"
-          echo "Matching files: ${{ steps.filter.outputs }}"
+          echo "Filter Outputs: ${{ toJson(steps.filter.outputs) }}"
 
       - name: Run PHPCS
         if: steps.filter.outputs.php == 'true'
