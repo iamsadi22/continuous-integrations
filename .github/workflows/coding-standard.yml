@@ -42,6 +42,8 @@ jobs:
           echo "Filter php = ${{ steps.filter.outputs.php }}"
           echo "Matching files: ${{ steps.filter.outputs.files }}"
           echo "Filter Outputs: ${{ toJson(steps.filter.outputs) }}"
+          echo "Filter Outputs: ${{ toJson(steps.filter) }}"
+          echo "Filter Outputs: ${{ toJson(steps) }}"
 
       - name: List Changed Files
         run: |
