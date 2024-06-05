@@ -40,6 +40,7 @@ jobs:
         run: |
           echo "Filter php = ${{ steps.filter.outputs.php }}"
           echo "Matching files: ${{ steps.filter.outputs.files }}"
+          echo "Matching files: ${{ steps.filter.outputs }}"
 
       - name: Run PHPCS
         if: steps.filter.outputs.php == 'true'
