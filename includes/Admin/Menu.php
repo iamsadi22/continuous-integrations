@@ -13,7 +13,6 @@ class Menu {
 		add_action( 'admin_menu', [ $this, 'init_menu' ] );
 	}
 
-
 	/**
 	 * Init menu
 	 *
