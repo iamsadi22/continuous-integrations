@@ -24,6 +24,13 @@ jobs:
           php-version: '7.4'  # or any version you are using
           tools: composer
 
+
+      - name: Use desired version of NodeJS
+        uses: actions/setup-node@5b52f097d36d4b0b2f94ed6de710023fbb8b2236 # v3.1.0
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+
       - name: Install dependencies
         run: |
           composer install
@@ -34,7 +41,7 @@ jobs:
         with:
           filters: |
             php:
-              - '*.php'
+              - 'includes/**/*.php'
 
       - name: Run PHPCS on changed files
         if: steps.filter.outputs.php == 'true'
