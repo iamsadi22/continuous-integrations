@@ -34,6 +34,9 @@
         "roots/wordpress-core-installer": "^1.100"
     },
     "scripts": {
-        "test": "phpunit"
+		"format": "phpcbf --standard=phpcs.xml --report-summary --report-source",
+		"lint": "phpcs --standard=phpcs.xml",
+		"test": "phpunit",
+		"test:watch": "phpunit-watcher watch < /dev/tty"
     }
 }
