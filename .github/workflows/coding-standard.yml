@@ -43,6 +43,10 @@ jobs:
           echo "Matching files: ${{ steps.filter.outputs.files }}"
           echo "Filter Outputs: ${{ toJson(steps.filter.outputs) }}"
 
+      - name: List Changed Files
+        run: |
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }}
+
       - name: Run PHPCS
         if: steps.filter.outputs.php == 'true'
         run: |
