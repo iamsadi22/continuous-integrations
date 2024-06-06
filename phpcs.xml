@@ -9,11 +9,58 @@
 	<!-- Lint all PHP files by default. -->
 	<file>includes</file>
 
-	<!-- Ensure all PHP code is compatible with PHP 5.6 and higher. -->
+	<!-- Ensure all PHP code is compatible with PHP 7.4 and higher. -->
 	<rule ref="PHPCompatibilityWP" />
-	<config name="testVersion" value="5.6-"/>
+	<config name="testVersion" value="7.4-"/>
 
 	<rule ref="WordPress" />
+
+	<!-- Require prepared SQL statements. -->
+	<rule ref="WordPress.DB.PreparedSQL" />
+	<rule ref="WordPress.DB.PreparedSQLPlaceholders" />
+
+	<!-- Disallow empty statements. -->
+	<rule ref="Generic.CodeAnalysis.EmptyStatement" />
+
+	<!-- Require correct usage of WP's i18n functions. -->
+	<rule ref="WordPress.WP.I18n">
+		<!-- Allow empty strings to be translated (e.g. space character) -->
+		<exclude name="WordPress.WP.I18n.NoEmptyStrings" />
+	</rule>
+
+	<!-- Disallow "development" functions like var_dump/print_r/phpinfo -->
+	<rule ref="WordPress.PHP.DevelopmentFunctions">
+		<!-- Allow triggering errors for reporting purposes. -->
+		<exclude name="WordPress.PHP.DevelopmentFunctions.error_log_error_log" />
+		<exclude name="WordPress.PHP.DevelopmentFunctions.error_log_trigger_error" />
+
+		<!-- Allow overriding the error handler. -->
+		<exclude name="WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler" />
+
+		<!-- Allow changing error level. -->
+		<exclude name="WordPress.PHP.DevelopmentFunctions.prevent_path_disclosure_error_reporting" />
+
+		<!-- Allow backtraces. -->
+		<exclude name="WordPress.PHP.DevelopmentFunctions.error_log_debug_backtrace" />
+		<exclude name="WordPress.PHP.DevelopmentFunctions.error_log_wp_debug_backtrace_summary" />
+
+		<!-- Set remaining to errors. -->
+		<type>error</type>
+	</rule>
+
+	<!-- Require valid syntax. -->
+	<rule ref="Generic.PHP.Syntax" />
+
+	<!-- Require proper docblocks be used in all PHP files -->
+	<rule ref="WordPress-Docs">
+		<exclude name="Squiz.Commenting.FileComment.MissingPackageTag" />
+		<exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop" />
+		<exclude name="Squiz.Commenting.FunctionComment.ThrowsNoFullStop" />
+		<exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamType" />
+
+		<!-- Commenting hygiene is nice, but this excludes too many valid comment syntaxes. -->
+		<exclude name="Squiz.Commenting.InlineComment.InvalidEndChar" />
+	</rule>
 
 	<!-- disable nonce checks on tests -->
 	<rule ref="WordPress.Security.NonceVerification">
